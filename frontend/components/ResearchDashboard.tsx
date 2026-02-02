@@ -198,7 +198,7 @@ export default function ResearchDashboard({
   const [isComplete, setIsComplete] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'patents' | 'market' | 'trends' | 'verification'>('overview');
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://nexus-r-d.onrender.com';
 
   // Real backend API connection with polling + websocket
   useEffect(() => {

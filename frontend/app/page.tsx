@@ -70,8 +70,11 @@ export default function Home() {
     if (!query.trim()) return;
 
     try {
-      // Call backend directly
-      const response = await fetch('http://localhost:8000/research', {
+      // Use environment variable or production URL
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://nexus-r-d.onrender.com';
+      
+      // Call backend
+      const response = await fetch(`${API_BASE}/research`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,12 +94,11 @@ export default function Home() {
         setIsResearching(true);
       } else {
         console.error('Backend error:', response.status);
-        // Show error instead of demo mode
-        alert('Failed to start research. Please check that backend is running on http://localhost:8000');
+        alert('Failed to start research. Please try again or check backend status.');
       }
     } catch (error) {
       console.error('Failed to start research:', error);
-      alert('Cannot connect to backend. Please start the backend server: python main.py');
+      alert('Cannot connect to research service. Please try again in a moment.');
     }
   };
 
