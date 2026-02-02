@@ -1,0 +1,46 @@
+# Core Framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-dotenv>=1.0.0
+pydantic>=2.10.0
+pydantic-settings>=2.6.0
+
+# Google Gemini AI
+google-genai>=1.0.0
+
+# Async & HTTP
+httpx>=0.28.0
+aiohttp>=3.10.0
+
+# Database (optional - comment out if not using)
+# supabase>=2.10.0
+
+# Caching (optional - comment out if not using)
+# redis>=5.0.0
+
+# Voice Generation (ElevenLabs AI)
+elevenlabs>=1.0.0
+
+# Data Processing
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Web Scraping & APIs
+beautifulsoup4>=4.12.0
+lxml>=5.2.0
+
+# Utilities
+tenacity>=9.0.0
+loguru>=0.7.0
+rich>=13.9.0
+python-dateutil>=2.9.0
+
+# JSON & Data
+orjson>=3.10.0
+
+# PDF Generation
+reportlab>=4.0.0
+
+# Testing
+pytest>=8.0.0
+pytest-asyncio>=0.24.0
