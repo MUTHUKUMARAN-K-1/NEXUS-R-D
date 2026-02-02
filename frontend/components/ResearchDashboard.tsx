@@ -549,7 +549,7 @@ function ResearchResults({
         <p className="text-lg text-[var(--text-secondary)] mb-6">{report.executive_summary.key_finding}</p>
 
         {report.audio_brief_url && (
-            <div className="mb-8 p-4 bg-dark-800/50 rounded-xl border border-primary-500/20 flex items-center gap-4">
+            <div className="mb-8 p-4 bg-[var(--bg-elevated)] rounded-xl border border-primary-500/20 flex items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-primary-500/20 flex items-center justify-center flex-shrink-0 animate-pulse">
                 <Volume2 className="w-5 h-5 text-primary-400" />
               </div>
@@ -608,10 +608,10 @@ function ResearchResults({
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="p-5 bg-dark-800/50 rounded-xl border border-dark-700 hover:border-primary-500/40 transition-colors"
+              className="p-5 bg-[var(--bg-elevated)] rounded-xl border border-[var(--border-color)] hover:border-primary-500/40 transition-colors"
             >
               <div className="flex items-start justify-between mb-3">
-                <h3 className="font-semibold text-white">{opp.title}</h3>
+                <h3 className="font-semibold text-[var(--text-primary)]">{opp.title}</h3>
                 <div className="flex items-center gap-2">
                   {opp.investment_score !== undefined && (
                     <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${
@@ -625,21 +625,21 @@ function ResearchResults({
                   <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
                     opp.potential_impact === 'high' ? 'bg-green-500/20 text-green-400' :
                     opp.potential_impact === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                    'bg-dark-600 text-dark-300'
+                    'bg-[var(--bg-elevated)] text-[var(--text-muted)]'
                   }`}>
                     {opp.potential_impact} impact
                   </span>
                 </div>
               </div>
-              <p className="text-sm text-dark-300 mb-3">{opp.description}</p>
+              <p className="text-sm text-[var(--text-secondary)] mb-3">{opp.description}</p>
               <div className="flex items-center gap-3">
-                <div className="flex-1 h-2 bg-dark-700 rounded-full overflow-hidden">
+                <div className="flex-1 h-2 bg-[var(--bg-elevated)] rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-primary-500 to-purple-500 rounded-full"
                     style={{ width: `${opp.confidence_score * 100}%` }}
                   />
                 </div>
-                <span className="text-xs text-dark-400">{(opp.confidence_score * 100).toFixed(0)}%</span>
+                <span className="text-xs text-[var(--text-muted)]">{(opp.confidence_score * 100).toFixed(0)}%</span>
               </div>
             </motion.div>
           ))}
@@ -648,7 +648,7 @@ function ResearchResults({
 
       {/* Tabbed Content */}
       <div className="glass-card overflow-hidden">
-        <div className="border-b border-dark-700 flex items-center justify-between">
+        <div className="border-b border-[var(--border-color)] flex items-center justify-between">
           <div className="flex">
             {['overview', 'threats', 'patents', 'market', 'trends', 'verification'].map((tab) => (
               <button
@@ -657,7 +657,7 @@ function ResearchResults({
                 className={`px-6 py-4 text-sm font-medium transition-colors ${
                   activeTab === tab
                     ? 'text-primary-400 border-b-2 border-primary-400 bg-primary-500/5'
-                    : 'text-dark-400 hover:text-white'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 {tab === 'threats' ? '🧠 Threats' : tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -688,14 +688,14 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
     case 'overview':
       return (
         <div className="space-y-6">
-          <h3 className="text-lg font-semibold text-white">Top Opportunities</h3>
+          <h3 className="text-lg font-semibold text-[var(--text-primary)]">Top Opportunities</h3>
           <ul className="space-y-3">
             {report.executive_summary.top_opportunities.map((opp, index) => (
-              <li key={index} className="flex items-center gap-3 p-4 bg-dark-800/50 rounded-lg">
+              <li key={index} className="flex items-center gap-3 p-4 bg-[var(--bg-elevated)] rounded-lg">
                 <div className="w-8 h-8 rounded-lg bg-primary-500/20 flex items-center justify-center text-primary-400 font-semibold">
                   {index + 1}
                 </div>
-                <span className="text-dark-200">{opp}</span>
+                <span className="text-[var(--text-secondary)]">{opp}</span>
               </li>
             ))}
           </ul>
