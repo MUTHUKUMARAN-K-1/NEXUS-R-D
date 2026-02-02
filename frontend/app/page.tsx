@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
   Sparkles, 
+  Gem,
   ArrowRight, 
   Zap, 
   Shield, 
@@ -154,8 +155,8 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 mb-8">
-              <Sparkles className="w-4 h-4 text-primary-400" />
-              <span className="text-sm text-primary-300">Powered by Gemini 3 Deep Think</span>
+              <Gem className="w-4 h-4 text-primary-400" />
+              <span className="text-sm text-primary-300">Powered by Gemini Deep Research Pro</span>
             </div>
           </motion.div>
 

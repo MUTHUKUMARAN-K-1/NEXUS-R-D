@@ -221,7 +221,7 @@ export default function CitationGraph({ patents }: CitationGraphProps) {
 
   if (!patents || patents.length === 0) {
     return (
-      <div className="p-8 text-center text-dark-400">
+      <div className="p-8 text-center text-[var(--text-muted)]">
         <Info className="w-12 h-12 mx-auto mb-4 opacity-50" />
         <p>No patent data available for visualization</p>
       </div>
@@ -239,26 +239,26 @@ export default function CitationGraph({ patents }: CitationGraphProps) {
       <div className="absolute top-2 right-2 flex gap-2 z-10">
         <button
           onClick={handleZoomIn}
-          className="p-2 bg-dark-800 rounded-lg hover:bg-dark-700 transition-colors"
+          className="p-2 bg-[var(--bg-elevated)] rounded-lg hover:bg-[var(--bg-card)] transition-colors"
           title="Zoom In"
         >
-          <ZoomIn className="w-4 h-4 text-dark-300" />
+          <ZoomIn className="w-4 h-4 text-[var(--text-secondary)]" />
         </button>
         <button
           onClick={handleZoomOut}
-          className="p-2 bg-dark-800 rounded-lg hover:bg-dark-700 transition-colors"
+          className="p-2 bg-[var(--bg-elevated)] rounded-lg hover:bg-[var(--bg-card)] transition-colors"
           title="Zoom Out"
         >
-          <ZoomOut className="w-4 h-4 text-dark-300" />
+          <ZoomOut className="w-4 h-4 text-[var(--text-secondary)]" />
         </button>
       </div>
 
       {/* Selected node info */}
       {selectedNode && (
-        <div className="absolute top-2 left-2 bg-dark-800/95 backdrop-blur-sm p-3 rounded-lg max-w-xs z-10 border border-dark-700">
+        <div className="absolute top-2 left-2 bg-[var(--bg-secondary)] backdrop-blur-sm p-3 rounded-lg max-w-xs z-10 border border-[var(--border-color)]">
           <p className="text-xs font-mono text-primary-400">{selectedNode.id}</p>
           <p className="text-sm text-white font-medium mt-1">{selectedNode.title}</p>
-          <p className="text-xs text-dark-400 mt-1">Assignee: {selectedNode.assignee}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">Assignee: {selectedNode.assignee}</p>
           {selectedNode.url && (
             <a
               href={selectedNode.url}
@@ -275,18 +275,18 @@ export default function CitationGraph({ patents }: CitationGraphProps) {
       {/* Graph */}
       <svg
         ref={svgRef}
-        className="w-full bg-dark-900/50 rounded-lg border border-dark-700"
+        className="w-full bg-[var(--bg-primary)] rounded-lg border border-[var(--border-color)]"
         style={{ minHeight: '400px' }}
       />
 
       {/* Legend */}
-      <div className="flex items-center justify-center gap-6 mt-4 text-xs text-dark-400">
+      <div className="flex items-center justify-center gap-6 mt-4 text-xs text-[var(--text-muted)]">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-gradient-to-br from-primary-500 to-purple-500" />
           <span>Patent Node (size = citations)</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-6 h-0.5 bg-dark-500" />
+          <div className="w-6 h-0.5 bg-[var(--bg-elevated)]" />
           <span>Citation Link</span>
         </div>
         <div className="flex items-center gap-2">

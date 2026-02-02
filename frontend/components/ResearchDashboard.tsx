@@ -297,7 +297,7 @@ export default function ResearchDashboard({
         <div className="glass-card p-8 max-w-md text-center">
           <XCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-2">Research Failed</h2>
-          <p className="text-dark-300 mb-6">{error}</p>
+          <p className="text-[var(--text-secondary)] mb-6">{error}</p>
           <button 
             onClick={() => window.location.reload()}
             className="btn-primary"
@@ -404,13 +404,13 @@ function ResearchInProgress({
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
           className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-purple-600 p-[3px]"
         >
-          <div className="w-full h-full rounded-full bg-dark-900 flex items-center justify-center">
+          <div className="w-full h-full rounded-full bg-[var(--bg-primary)] flex items-center justify-center">
             <Sparkles className="w-10 h-10 text-primary-400" />
           </div>
         </motion.div>
         
-        <h2 className="text-3xl font-bold text-white mb-3">Researching...</h2>
-        <p className="text-dark-300 text-lg">{query}</p>
+        <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-3">Researching...</h2>
+        <p className="text-[var(--text-secondary)] text-lg">{query}</p>
         
         {status && (
           <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-primary-500/10 rounded-full">
@@ -441,8 +441,8 @@ function ResearchInProgress({
                   <Icon className={`w-5 h-5 text-accent-${info.color}`} />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-white">{info.name}</h3>
-                  <p className="text-xs text-dark-400">
+                  <h3 className="font-semibold text-[var(--text-primary)]">{info.name}</h3>
+                  <p className="text-xs text-[var(--text-muted)]">
                     {agentStatus?.status === 'completed' ? 'Complete' : 
                      agentStatus?.status === 'running' ? (agentStatus.task || info.description) : 
                      agentStatus?.status === 'error' ? 'Error' : 'Waiting...'}
@@ -461,7 +461,7 @@ function ResearchInProgress({
               </div>
               
               {(agentStatus?.results ?? 0) > 0 && (
-                <p className="text-xs text-dark-400 mt-2">
+                <p className="text-xs text-[var(--text-muted)] mt-2">
                   {agentStatus?.results} results found
                 </p>
               )}
@@ -472,7 +472,7 @@ function ResearchInProgress({
 
       {/* Research Phases */}
       <div className="mt-8 glass-card p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Research Phases</h3>
+        <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Research Phases</h3>
         <div className="flex items-center justify-between">
           {['patent_search', 'market_analysis', 'verification', 'synthesis'].map((phase, index) => {
             const isActive = status?.phase === phase;
@@ -485,18 +485,18 @@ function ResearchInProgress({
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                     isComplete ? 'bg-green-500/20 text-green-400' :
                     isActive ? 'bg-primary-500/20 text-primary-400' :
-                    'bg-dark-700 text-dark-400'
+                    'bg-[var(--bg-elevated)] text-[var(--text-muted)]'
                   }`}>
                     {isComplete ? <CheckCircle2 className="w-4 h-4" /> : 
                      isActive ? <Loader2 className="w-4 h-4 animate-spin" /> :
                      <span className="text-sm">{index + 1}</span>}
                   </div>
-                  <span className={`text-sm ${isActive || isComplete ? 'text-white' : 'text-dark-400'}`}>
+                  <span className={`text-sm ${isActive || isComplete ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
                     {phase.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                   </span>
                 </div>
                 {index < 3 && (
-                  <ChevronRight className="w-5 h-5 text-dark-600 mx-2" />
+                  <ChevronRight className="w-5 h-5 text-[var(--text-muted)] mx-2" />
                 )}
               </div>
             );
@@ -715,7 +715,7 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
             <h3 className="text-lg font-semibold text-white">Competitive Threat Radar</h3>
           </div>
           {threats.length === 0 ? (
-            <p className="text-dark-400">No significant competitive threats identified.</p>
+            <p className="text-[var(--text-muted)]">No significant competitive threats identified.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {threats.map((threat, index) => {
@@ -733,15 +733,15 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
                     </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-dark-400">Patents</span>
+                        <span className="text-[var(--text-muted)]">Patents</span>
                         <span className="text-white font-medium">{threat.patent_count}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-dark-400">Market Overlap</span>
+                        <span className="text-[var(--text-muted)]">Market Overlap</span>
                         <span className="text-white font-medium">{(threat.market_overlap * 100).toFixed(0)}%</span>
                       </div>
                     </div>
-                    <p className="text-xs text-dark-300 mt-3">{threat.threat_summary}</p>
+                    <p className="text-xs text-[var(--text-secondary)] mt-3">{threat.threat_summary}</p>
                   </div>
                 );
               })}
@@ -754,15 +754,15 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-white">Patent Landscape</h3>
-            <span className="text-dark-400">{report.patent_landscape.total_patents} patents analyzed</span>
+            <span className="text-[var(--text-muted)]">{report.patent_landscape.total_patents} patents analyzed</span>
           </div>
           
           {/* Citation Network Graph */}
           {report.patent_landscape.patents && report.patent_landscape.patents.length > 0 && (
-            <div className="bg-dark-800/50 rounded-xl p-4 border border-dark-700">
-              <h4 className="text-sm text-dark-400 mb-3 flex items-center gap-2">
+            <div className="bg-[var(--bg-elevated)] rounded-xl p-4 border border-[var(--border-color)]">
+              <h4 className="text-sm text-[var(--text-muted)] mb-3 flex items-center gap-2">
                 <span>📊 Citation Network</span>
-                <span className="text-xs text-dark-500">(Interactive - drag to rearrange, click to view)</span>
+                <span className="text-xs text-[var(--text-muted)]">(Interactive - drag to rearrange, click to view)</span>
               </h4>
               <CitationGraph patents={report.patent_landscape.patents} />
             </div>
@@ -770,12 +770,12 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
           
           {/* Top Assignees */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 bg-dark-800/50 rounded-lg">
-              <h4 className="text-sm text-dark-400 mb-3">Top Assignees</h4>
+            <div className="p-4 bg-[var(--bg-elevated)] rounded-lg">
+              <h4 className="text-sm text-[var(--text-muted)] mb-3">Top Assignees</h4>
               <div className="space-y-2">
                 {Object.entries(report.patent_landscape.top_assignees || {}).slice(0, 5).map(([name, count]) => (
                   <div key={name} className="flex items-center justify-between">
-                    <span className="text-dark-200 truncate">{name}</span>
+                    <span className="text-[var(--text-secondary)] truncate">{name}</span>
                     <span className="text-primary-400 font-semibold">{count}</span>
                   </div>
                 ))}
@@ -786,10 +786,10 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
           {/* Patent List with Links */}
           {report.patent_landscape.patents && report.patent_landscape.patents.length > 0 && (
             <div className="mt-6">
-              <h4 className="text-sm text-dark-400 mb-3">Patent Details</h4>
+              <h4 className="text-sm text-[var(--text-muted)] mb-3">Patent Details</h4>
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {report.patent_landscape.patents.slice(0, 20).map((patent, index) => (
-                  <div key={patent.patent_id || index} className="p-4 bg-dark-800/50 rounded-lg border border-dark-700 hover:border-primary-500/40 transition-colors">
+                  <div key={patent.patent_id || index} className="p-4 bg-[var(--bg-elevated)] rounded-lg border border-[var(--border-color)] hover:border-primary-500/40 transition-colors">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
@@ -797,7 +797,7 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
                             {patent.patent_id}
                           </span>
                           {patent.relevance_score && (
-                            <span className="text-xs text-dark-400">
+                            <span className="text-xs text-[var(--text-muted)]">
                               {(patent.relevance_score * 100).toFixed(0)}% match
                             </span>
                           )}
@@ -806,10 +806,10 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
                           {patent.title}
                         </h5>
                         {patent.assignee && (
-                          <p className="text-xs text-dark-400 mt-1">Assignee: {patent.assignee}</p>
+                          <p className="text-xs text-[var(--text-muted)] mt-1">Assignee: {patent.assignee}</p>
                         )}
                         {patent.abstract && (
-                          <p className="text-xs text-dark-300 mt-2 line-clamp-2">{patent.abstract}</p>
+                          <p className="text-xs text-[var(--text-secondary)] mt-2 line-clamp-2">{patent.abstract}</p>
                         )}
                       </div>
                       {patent.url && (
@@ -836,18 +836,18 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-white">Market Intelligence</h3>
-            <span className="text-dark-400">
+            <span className="text-[var(--text-muted)]">
               ${(report.market_intelligence.funding_total_usd / 1000000).toFixed(1)}M tracked
             </span>
           </div>
-          <div className="p-4 bg-dark-800/50 rounded-lg">
-            <h4 className="text-sm text-dark-400 mb-3">Relevant Startups</h4>
+          <div className="p-4 bg-[var(--bg-elevated)] rounded-lg">
+            <h4 className="text-sm text-[var(--text-muted)] mb-3">Relevant Startups</h4>
             <div className="space-y-3">
               {report.market_intelligence.relevant_startups.slice(0, 5).map((startup: any, index: number) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-dark-700/50 rounded-lg">
+                <div key={index} className="flex items-center justify-between p-3 bg-[var(--bg-card)] rounded-lg">
                   <div>
                     <p className="font-medium text-white">{startup.name}</p>
-                    <p className="text-xs text-dark-400">{startup.description}</p>
+                    <p className="text-xs text-[var(--text-muted)]">{startup.description}</p>
                   </div>
                   {startup.funding_total && (
                     <span className="text-green-400 font-semibold">
@@ -865,25 +865,25 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-white">Technology Trends</h3>
-            <span className="text-dark-400">{report.tech_trends.total_papers_analyzed} papers analyzed</span>
+            <span className="text-[var(--text-muted)]">{report.tech_trends.total_papers_analyzed} papers analyzed</span>
           </div>
           <div className="space-y-4">
             {report.tech_trends.trends.slice(0, 4).map((trend: any, index: number) => (
-              <div key={index} className="p-4 bg-dark-800/50 rounded-lg">
+              <div key={index} className="p-4 bg-[var(--bg-elevated)] rounded-lg">
                 <div className="flex items-start justify-between mb-2">
                   <h4 className="font-medium text-white">{trend.technology_name}</h4>
                   <span className={`px-2 py-0.5 text-xs rounded-full ${
                     trend.maturity_level === 'emerging' ? 'bg-cyan-500/20 text-cyan-400' :
                     trend.maturity_level === 'growing' ? 'bg-green-500/20 text-green-400' :
-                    'bg-dark-600 text-dark-300'
+                    'bg-[var(--bg-card)] text-[var(--text-muted)]'
                   }`}>
                     {trend.maturity_level}
                   </span>
                 </div>
-                <p className="text-sm text-dark-300">{trend.description}</p>
+                <p className="text-sm text-[var(--text-secondary)]">{trend.description}</p>
                 <div className="mt-2 flex items-center gap-4">
-                  <span className="text-xs text-dark-400">TRL: {trend.trl_level}/9</span>
-                  <span className="text-xs text-dark-400">Momentum: {(trend.research_momentum * 100).toFixed(0)}%</span>
+                  <span className="text-xs text-[var(--text-muted)]">TRL: {trend.trl_level}/9</span>
+                  <span className="text-xs text-[var(--text-muted)]">Momentum: {(trend.research_momentum * 100).toFixed(0)}%</span>
                 </div>
               </div>
             ))}
@@ -897,7 +897,7 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
             <Shield className="w-8 h-8 text-green-400" />
             <div>
               <h3 className="font-semibold text-white">Epistemic Verification Complete</h3>
-              <p className="text-sm text-dark-300">
+              <p className="text-sm text-[var(--text-secondary)]">
                 All claims verified across {report.verification_report.total_sources_used} independent sources
               </p>
             </div>
@@ -905,7 +905,7 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
               <p className="text-2xl font-bold text-green-400">
                 {(report.verification_report.average_confidence * 100).toFixed(0)}%
               </p>
-              <p className="text-xs text-dark-400">Average Confidence</p>
+              <p className="text-xs text-[var(--text-muted)]">Average Confidence</p>
             </div>
           </div>
         </div>
@@ -917,7 +917,7 @@ function TabContent({ tab, report }: { tab: string; report: ResearchReport }) {
 
 function StatusIndicator({ status }: { status: 'idle' | 'running' | 'completed' | 'error' }) {
   const styles: Record<string, string> = {
-    idle: 'bg-dark-500',
+    idle: 'bg-[var(--bg-elevated)]',
     running: 'bg-cyan-400 animate-pulse shadow-lg shadow-cyan-400/50',
     completed: 'bg-green-400 shadow-lg shadow-green-400/50',
     error: 'bg-red-400 shadow-lg shadow-red-400/50',
@@ -945,12 +945,12 @@ function StatCard({
   };
 
   return (
-    <div className="p-4 bg-dark-800/50 rounded-xl">
+    <div className="p-4 bg-[var(--bg-elevated)] rounded-xl">
       <div className={`w-10 h-10 rounded-lg ${colorClasses[color]} flex items-center justify-center mb-3`}>
         {icon}
       </div>
       <p className="text-2xl font-bold text-white">{value}</p>
-      <p className="text-sm text-dark-400">{label}</p>
+      <p className="text-sm text-[var(--text-muted)]">{label}</p>
     </div>
   );
 }

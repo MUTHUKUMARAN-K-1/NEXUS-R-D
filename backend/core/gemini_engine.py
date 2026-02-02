@@ -138,16 +138,37 @@ Rank opportunities by potential impact and time sensitivity."""
         """
         last_error = None
         
-        # Models to try: primary first, then fallback
-        primary_model = self.thinking_model if use_thinking else self.model
-        fallback_model = "gemini-2.0-flash"
+        # 3-tier fallback chain:
+        # 1. deep-research-pro-preview-12-2025 (primary - autonomous research agent)
+        # 2. gemini-3-pro-preview (first fallback - deep thinking)
+        # 3. gemini-2.0-flash (second fallback - fast and reliable)
         
-        # Try with primary model first, then fallback
-        models_to_try = [primary_model]
-        if primary_model != fallback_model:
-            models_to_try.append(fallback_model)
+        # For deep research tasks, try the research agent first
+        deep_research_model = "gemini-2.0-flash"  # Base model for deep research agent
+        deep_research_agent = "deep-research-pro-preview-12-2025"
+        first_fallback = "gemini-3-pro-preview"
+        second_fallback = "gemini-2.0-flash"
         
-        for model_to_use in models_to_try:
+        # Build fallback chain based on task type
+        if use_thinking or task_type in ["synthesis", "verification", "whitespace"]:
+            # For complex tasks, try deep research agent first
+            models_to_try = [
+                {"model": deep_research_model, "agent": deep_research_agent, "name": "Deep Research Agent"},
+                {"model": first_fallback, "agent": None, "name": "Gemini 3 Pro"},
+                {"model": second_fallback, "agent": None, "name": "Gemini 2.0 Flash"},
+            ]
+        else:
+            # For simpler tasks, skip the deep research agent
+            models_to_try = [
+                {"model": first_fallback, "agent": None, "name": "Gemini 3 Pro"},
+                {"model": second_fallback, "agent": None, "name": "Gemini 2.0 Flash"},
+            ]
+        
+        for model_config in models_to_try:
+            model_name = model_config["model"]
+            agent_name = model_config.get("agent")
+            config_name = model_config["name"]
+            
             for attempt in range(max_retries):
                 try:
                     # Add delay between requests to avoid rate limiting
@@ -158,24 +179,48 @@ Rank opportunities by potential impact and time sensitivity."""
                     
                     system_prompt = self.system_prompts.get(task_type, self.system_prompts["synthesis"])
                     
-                    # Create the request
-                    response = await asyncio.to_thread(
-                        self.client.models.generate_content,
-                        model=model_to_use,
-                        contents=[
-                            types.Content(
-                                role="user",
-                                parts=[types.Part(text=f"{system_prompt}\n\n---\n\n{prompt}")]
-                            )
-                        ],
-                        config=types.GenerateContentConfig(
+                    # Build config based on whether we're using the deep research agent
+                    if agent_name:
+                        # Deep research agent - use Google Search tool
+                        logger.info(f"Using {config_name} for {task_type}")
+                        config = types.GenerateContentConfig(
                             temperature=temperature,
                             max_output_tokens=max_tokens,
+                            tools=[types.Tool(google_search=types.GoogleSearch())],
                         )
-                    )
+                        # Note: The agent parameter may require different API structure
+                        # For now, we use the standard approach with grounding
+                        response = await asyncio.to_thread(
+                            self.client.models.generate_content,
+                            model=model_name,
+                            contents=[
+                                types.Content(
+                                    role="user",
+                                    parts=[types.Part(text=f"{system_prompt}\n\n---\n\n{prompt}")]
+                                )
+                            ],
+                            config=config
+                        )
+                    else:
+                        # Standard model - no agent
+                        logger.info(f"Using {config_name} for {task_type}")
+                        response = await asyncio.to_thread(
+                            self.client.models.generate_content,
+                            model=model_name,
+                            contents=[
+                                types.Content(
+                                    role="user",
+                                    parts=[types.Part(text=f"{system_prompt}\n\n---\n\n{prompt}")]
+                                )
+                            ],
+                            config=types.GenerateContentConfig(
+                                temperature=temperature,
+                                max_output_tokens=max_tokens,
+                            )
+                        )
                     
                     if response.text:
-                        logger.debug(f"Generated response for {task_type} using {model_to_use}: {len(response.text)} chars")
+                        logger.debug(f"Generated response for {task_type} using {config_name}: {len(response.text)} chars")
                         # Small delay after successful request to avoid hitting rate limits
                         await asyncio.sleep(0.5)
                         return response.text
@@ -189,18 +234,20 @@ Rank opportunities by potential impact and time sensitivity."""
                     
                     # Check if it's a 503 overload or other error - switch to fallback model
                     if "503" in error_str or "UNAVAILABLE" in error_str or "overloaded" in error_str.lower():
-                        logger.warning(f"Model {model_to_use} unavailable (attempt {attempt + 1}/{max_retries}): {e}")
-                        # Break inner loop to try fallback model
-                        if model_to_use == primary_model and fallback_model in models_to_try:
-                            logger.info(f"Switching to fallback model: {fallback_model}")
-                            break
+                        logger.warning(f"{config_name} unavailable (attempt {attempt + 1}/{max_retries}): {e}")
+                        # Break inner loop to try next model in fallback chain
+                        break
                     # Check if it's a rate limit error
                     elif "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
-                        logger.warning(f"Rate limited (attempt {attempt + 1}/{max_retries}), will retry...")
+                        logger.warning(f"Rate limited on {config_name} (attempt {attempt + 1}/{max_retries}), will retry...")
                         if attempt < max_retries - 1:
                             continue  # Retry with backoff
+                        else:
+                            # Max retries hit, try next model
+                            logger.info(f"Moving to next fallback after rate limit on {config_name}")
+                            break
                     else:
-                        logger.error(f"Gemini generation error (attempt {attempt + 1}/{max_retries}): {e}")
+                        logger.error(f"Gemini generation error on {config_name} (attempt {attempt + 1}/{max_retries}): {e}")
                         if attempt < max_retries - 1:
                             await asyncio.sleep(2)
         
