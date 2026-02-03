@@ -309,7 +309,7 @@ NEWS_API_KEY=your_newsapi_key
 
 ## 🎬 Demo Video
 
-[**▶️ Watch the 3-minute demo →**](#)
+[**▶️ Watch the 3-minute demo →**](https://youtu.be/0Qpnq8-1S1s)
 
 *Watch NEXUS-R&D autonomously research "solid-state batteries":*
 1. 5 agents coordinate in real-time
